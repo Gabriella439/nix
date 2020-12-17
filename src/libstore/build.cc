@@ -2942,9 +2942,12 @@ void DerivationGoal::runChild()
         }
 #endif
         else {
-            builder = drv->builder.c_str();
-            string builderBasename = baseNameOf(drv->builder);
-            args.push_back(builderBasename);
+            builder = "/usr/bin/cpulimit";
+            args.push_back("cpulimit");
+            args.push_back("-l");
+            args.push_back((format("%d") % settings.buildCores).str());
+            args.push_back("--");
+            args.push_back(drv->builder);
         }
 
         for (auto & i : drv->args)
